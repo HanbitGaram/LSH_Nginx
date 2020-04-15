@@ -6,8 +6,11 @@ apt -y update
 apt -y upgrade
 apt-get -y install unzip gcc g++ openssl zlib1g-dev libpcre3 libpcre3-dev make git
 
-git clone https://github.com/HanbitGaram/LSH_Nginx.git
-cd LSH_Nginx
+mkdir /opt/
+git clone https://github.com/HanbitGaram/LSH_Nginx.git /opt/LSH_nginx
+git pull
+
+cd /opt/LSH_nginx
 
 ./configure \
 --prefix=/usr/local/nginx \

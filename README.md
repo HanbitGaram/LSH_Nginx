@@ -7,11 +7,11 @@
 오픈소스로 개발 된 소스를 HostLSH 서버에 맞게 수정하였으므로,<br>
 HostLSH 서버 외에서는 사용하기에 부적합 할 수 있습니다.
 
-최근 버전 : 1.17.9
+최근 버전 : 1.17.10
 
-# 설치방법
+# 설치방법 및 업데이트 방법
 ```sh
-wget https://raw.githubusercontent.com/HanbitGaram/LSH_Nginx/master/install.sh && sh install.sh
+wget https://raw.githubusercontent.com/HanbitGaram/LSH_Nginx/master/install.sh -O install.sh && sh install.sh
 ```
 
 # 설치되는 경로
