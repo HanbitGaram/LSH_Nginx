@@ -30,8 +30,6 @@ cd ..
 --with-http_ssl_module \
 --with-http_realip_module \
 --with-http_stub_status_module \
---with-http_realip_module \
---with-ipv6 \
 --add-module=/opt/LSH_nginx/headers-more-nginx-module
 
 
