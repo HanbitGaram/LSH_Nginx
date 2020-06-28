@@ -14,6 +14,12 @@ HostLSH 서버 외에서는 사용하기에 부적합 할 수 있습니다.
 wget https://raw.githubusercontent.com/HanbitGaram/LSH_Nginx/master/install.sh -O install.sh && sh install.sh
 ```
 
+## WSL을 사용하는 경우
+위 설치방법이 동작하지 않을 수 있습니다.
+INSTALL 파일의 내용을 터미널에 복붙하여 넣어주시기 바랍니다.
+
+ｉｎｓｔａｌｌ．ｓｈ를　열어서 복사하고，　내용을　ＷＳＬ창에　붙여넣기
+
 # 설치되는 경로
 ```
 /usr/local/nginx
