@@ -46,11 +46,9 @@ ngx_module_t  ngx_http_header_filter_module = {
 };
 
 
-static u_char ngx_http_server_string[] = "Server: HostLSH Server" CRLF;
+static u_char ngx_http_server_string[] = "Server: nginx" CRLF;
 static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
 static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
-//static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
-//static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
 
 
 static ngx_str_t ngx_http_status_lines[] = {
@@ -197,6 +195,10 @@ ngx_http_header_filter(ngx_http_request_t *r)
             r->headers_out.last_modified_time = -1;
             r->headers_out.last_modified = NULL;
         }
+    }
+
+    if (r->keepalive && (ngx_terminate || ngx_exiting)) {
+        r->keepalive = 0;
     }
 
     len = sizeof("HTTP/1.x ") - 1 + sizeof(CRLF) - 1

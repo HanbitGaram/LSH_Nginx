@@ -495,21 +495,24 @@ ngx_open_listening_sockets(ngx_cycle_t *cycle)
                 return NGX_ERROR;
             }
 
-            if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR,
-                           (const void *) &reuseaddr, sizeof(int))
-                == -1)
-            {
-                ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
-                              "setsockopt(SO_REUSEADDR) %V failed",
-                              &ls[i].addr_text);
+            if (ls[i].type != SOCK_DGRAM || !ngx_test_config) {
 
-                if (ngx_close_socket(s) == -1) {
+                if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR,
+                               (const void *) &reuseaddr, sizeof(int))
+                    == -1)
+                {
                     ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
-                                  ngx_close_socket_n " %V failed",
+                                  "setsockopt(SO_REUSEADDR) %V failed",
                                   &ls[i].addr_text);
-                }
 
-                return NGX_ERROR;
+                    if (ngx_close_socket(s) == -1) {
+                        ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
+                                      ngx_close_socket_n " %V failed",
+                                      &ls[i].addr_text);
+                    }
+
+                    return NGX_ERROR;
+                }
             }
 
 #if (NGX_HAVE_REUSEPORT)
@@ -1310,6 +1313,7 @@ ngx_drain_connections(ngx_cycle_t *cycle)
                       cycle->connection_n);
     }
 
+    c = NULL;
     n = ngx_max(ngx_min(32, cycle->reusable_connections_n / 8), 1);
 
     for (i = 0; i < n; i++) {
@@ -1322,6 +1326,21 @@ ngx_drain_connections(ngx_cycle_t *cycle)
 
         ngx_log_debug0(NGX_LOG_DEBUG_CORE, c->log, 0,
                        "reusing connection");
+
+        c->close = 1;
+        c->read->handler(c->read);
+    }
+
+    if (cycle->free_connection_n == 0 && c && c->reusable) {
+
+        /*
+         * if no connections were freed, try to reuse the last
+         * connection again: this should free it as long as
+         * previous reuse moved it to lingering close
+         */
+
+        ngx_log_debug0(NGX_LOG_DEBUG_CORE, c->log, 0,
+                       "reusing connection again");
 
         c->close = 1;
         c->read->handler(c->read);
