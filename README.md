@@ -11,7 +11,7 @@ HostLSH 서버 외에서는 사용하기에 부적합 할 수 있습니다.
 
 # 설치방법 및 업데이트 방법
 ```sh
-wget -O https://raw.githubusercontent.com/HanbitGaram/LSH_Nginx/master/install.sh && sh install.sh
+wget https://raw.githubusercontent.com/HanbitGaram/LSH_Nginx/master/install.sh -O install.sh && sh install.sh
 ```
 
 ## WSL을 사용하는 경우
